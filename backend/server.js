@@ -44,7 +44,14 @@ const server = createServer(app);
 const io = initializeSocket(server);
 
 // Middleware
-
+app.use(
+  cors({
+    origin: "*",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "x-auth-token"],
+  })
+);
 
 app.use(express.json());
 
