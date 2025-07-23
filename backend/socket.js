@@ -6,12 +6,7 @@ const userSockets = new Map();
 const initializeSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: [
-        "http://localhost:3000",
-        "http://localhost:3001",
-        "http://localhost:5000",
-        "http://98.70.40.75:5001",
-      ],
+      origin: "*",
       methods: ["GET", "POST"],
       credentials: true,
     },
