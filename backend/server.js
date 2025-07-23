@@ -46,7 +46,7 @@ const io = initializeSocket(server);
 // Middleware
 app.use(
   cors({
-    origin: "*",
+    origin: "http://98.70.40.75:3000",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "x-auth-token"],
