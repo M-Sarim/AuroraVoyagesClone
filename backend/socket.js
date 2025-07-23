@@ -10,6 +10,7 @@ const initializeSocket = (server) => {
         "http://localhost:3000",
         "http://localhost:3001",
         "http://localhost:5000",
+        "http://98.70.40.75:5001",
       ],
       methods: ["GET", "POST"],
       credentials: true,
