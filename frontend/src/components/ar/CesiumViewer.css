@@ -1,0 +1,235 @@
+.cesium-viewer-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.cesium-viewer {
+  width: 100%;
+  height: 80vh; /* Use viewport height for better responsiveness */
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
+  min-height: 700px; /* Further increased min-height */
+  background-color: #000;
+}
+
+/* Make sure the Cesium container is properly sized */
+.cesium-viewer canvas {
+  width: 100%;
+  height: 100%;
+  outline: none;
+}
+
+/* Fix for Cesium widgets */
+.cesium-viewer .cesium-widget {
+  width: 100%;
+  height: 100%;
+}
+
+/* Enhanced styling for Cesium labels */
+.cesium-viewer .cesium-entity-label {
+  font-family: 'Arial', sans-serif;
+  font-weight: 600;
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Enhanced styling for Cesium info box */
+.cesium-infoBox {
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+}
+
+.cesium-infoBox-title {
+  background-color: #4f46e5;
+  padding: 12px;
+  font-weight: 600;
+}
+
+.cesium-infoBox-description {
+  padding: 12px;
+  font-family: 'Arial', sans-serif;
+  line-height: 1.5;
+}
+
+.cesium-infoBox-description h2 {
+  font-size: 18px;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.cesium-infoBox-description h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+  color: #374151;
+}
+
+.cesium-infoBox-description p {
+  margin-bottom: 8px;
+  color: #4b5563;
+}
+
+.cesium-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.cesium-spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #4f46e5;
+  animation: spin 1s ease-in-out infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.cesium-error {
+  padding: 24px;
+  background-color: #fee2e2;
+  color: #b91c1c;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 200px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border: 1px solid #fca5a5;
+}
+
+.cesium-instructions {
+  margin-top: 12px;
+  padding: 12px 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cesium-instructions h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #1f2937;
+}
+
+.cesium-instructions ul {
+  list-style-type: disc;
+  padding-left: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 20px;
+}
+
+.cesium-instructions li {
+  margin-bottom: 4px;
+  color: #4b5563;
+  flex: 1 0 40%;
+}
+
+/* Custom controls - more subtle */
+.cesium-custom-controls {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  z-index: 9999; /* Very high z-index to ensure controls are above all other elements */
+  pointer-events: auto; /* Ensure clicks are captured */
+  background-color: rgba(255, 255, 255, 0.08); /* Even more subtle background */
+  padding: 6px;
+  border-radius: 12px;
+  opacity: 0.6; /* More transparent by default */
+  transition: opacity 0.3s ease;
+}
+
+.cesium-custom-controls:hover {
+  opacity: 0.9; /* Not fully opaque even on hover */
+}
+
+.cesium-control-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1); /* More subtle background */
+  padding: 6px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Even lighter shadow */
+}
+
+.cesium-zoom-button {
+  width: 32px; /* Even smaller size */
+  height: 32px; /* Even smaller size */
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.6); /* Semi-transparent background */
+  border: 1px solid rgba(79, 70, 229, 0.4); /* Thinner, more transparent border */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15); /* Lighter shadow */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #4f46e5;
+  transition: all 0.2s ease;
+  position: relative; /* Ensure proper stacking */
+  z-index: 10000; /* Higher than the container */
+  font-size: 14px; /* Smaller font */
+  font-weight: bold;
+}
+
+.cesium-zoom-button:hover {
+  background-color: rgba(255, 255, 255, 0.8);
+  transform: scale(1.05); /* Smaller scale effect */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Lighter shadow */
+}
+
+.cesium-zoom-button:active {
+  background-color: rgba(229, 231, 235, 0.8);
+  transform: scale(0.95);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15); /* Even lighter shadow */
+}
+
+.cesium-zoom-button svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+}
+
+.cesium-reset-view {
+  background-color: rgba(79, 70, 229, 0.6); /* Semi-transparent background */
+  color: white;
+}
+
+.cesium-reset-view:hover {
+  background-color: rgba(67, 56, 202, 0.8); /* More opaque on hover */
+}
