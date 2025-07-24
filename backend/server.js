@@ -46,10 +46,8 @@ const io = initializeSocket(server);
 // Middleware
 app.use(
   cors({
-    origin: "http://20.244.45.50:3000",
+    origin: "https://auroravoyages.com",
     credentials: true,
-    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "x-auth-token"],
   })
 );
 

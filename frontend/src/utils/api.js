@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an instance of axios
 const api = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://20.244.45.50:5001/api",
+  baseURL: process.env.REACT_APP_API_URL || "https://auroravoyages.com/api",
   headers: {
     "Content-Type": "application/json",
   },

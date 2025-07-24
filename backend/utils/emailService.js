@@ -295,7 +295,7 @@ export const sendEmail = async (options) => {
  */
 export const sendPasswordResetEmail = async (email, resetToken, userName) => {
   const resetUrl = `${
-    process.env.FRONTEND_URL || "http://20.244.45.50:3000"
+    process.env.FRONTEND_URL || "https://auroravoyages.com"
   }/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
   const subject = "Aurora Voyages - Password Reset";
