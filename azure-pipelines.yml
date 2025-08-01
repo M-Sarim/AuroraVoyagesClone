@@ -1,21 +1,68 @@
-# Node.js with React
-# Build a Node.js project that uses React.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
-
 trigger:
 - main
 
 pool:
-  vmImage: ubuntu-latest
+  vmImage: 'ubuntu-latest'
 
-steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '20.x'
-  displayName: 'Install Node.js'
+variables:
+  vmIp: '20.244.45.50'
+  vmUsername: 'auroravoyages'
+  vmName: 'aurora-voyages-vm'
+  vmResourceGroup: 'auroravoyages-rg'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
+stages:
+- stage: Deploy
+  jobs:
+  - job: DeployToAzureVM
+    steps:
+
+    # Step 1: Start Azure VM
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'AzureConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo "Starting VM..."
+          az vm start --resource-group $(vmResourceGroup) --name $(vmName)
+      displayName: 'Start Azure VM'
+
+    # Step 2: Download SSH Key (Secure File)
+    - task: DownloadSecureFile@1
+      name: downloadKey
+      inputs:
+        secureFile: 'id_rsa'
+
+    # Step 3: Set permissions for SSH key
+    - script: |
+        chmod 600 $(downloadKey.secureFilePath)
+      displayName: 'Set SSH Key Permissions'
+
+    # Step 4: Deploy frontend and restart Apache
+    - script: |
+        ssh -o StrictHostKeyChecking=no -i $(downloadKey.secureFilePath) $(vmUsername)@$(vmIp) << 'EOF'
+          echo "Pulling latest code..."
+          cd ~/AuroraVoyagesClone
+          git pull origin main
+
+          echo "Installing frontend dependencies..."
+          cd frontend
+          npm install
+          npm run build
+
+          echo "Copying frontend to web root..."
+          sudo cp -r build/* /var/www/html/aurora/frontend/build/
+          sudo systemctl restart apache2
+        EOF
+      displayName: 'Deploy Frontend and Restart Apache'
+
+    # Optional Step 5: Shut down VM after deployment
+    - task: AzureCLI@2
+      inputs:
+        azureSubscription: 'AzureConnection'
+        scriptType: 'bash'
+        scriptLocation: 'inlineScript'
+        inlineScript: |
+          echo "Shutting down VM..."
+          az vm deallocate --resource-group $(vmResourceGroup) --name $(vmName)
+      displayName: 'Shutdown Azure VM (Optional)'
