@@ -1,4 +1,4 @@
-name: Deploy AuroraVoyages to Azure VM
+name: Deploy Aurora Voyages to Azure VM
 
 on:
   push:
@@ -7,43 +7,48 @@ on:
 
 jobs:
   deploy:
+    name: 🌐 Aurora Deployment
     runs-on: ubuntu-latest
 
     steps:
-    - name: 📥 Checkout Repository
-      uses: actions/checkout@v3
+      - name: 📥 Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: 🛠️ Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: 🛠️ Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-    - name: 📦 Install Backend Dependencies
-      run: |
-        cd backend
-        npm install
-
-    - name: 🚀 Build Frontend
-      run: |
-        cd frontend
-        npm install
-        npm run build
-
-    - name: 🔐 Setup SSH Key
-      uses: webfactory/ssh-agent@v0.9.0
-      with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: 📡 Deploy to Azure VM
-      run: |
-        scp -r ./frontend/build/ ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/html/aurora/frontend/
-        scp -r ./backend ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/html/aurora/
-        ssh ${{ secrets.VM_USER }}@${{ secrets.VM_IP }} << 'EOF'
-          cd /var/www/html/aurora/backend
+      - name: 📦 Install Backend Dependencies
+        run: |
+          cd backend
           npm install
-          pm2 restart all || pm2 start npm --name aurora-backend -- start
-          sudo systemctl restart apache2
-        EOF
 
-    - name: ✅ Confirm Deployment
-      run: echo "Deployment to Aurora VM complete!"
+      - name: ⚛️ Build Frontend
+        run: |
+          cd frontend
+          npm install
+          npm run build
+
+      - name: 🔐 Start SSH Agent and Load Key
+        uses: webfactory/ssh-agent@v0.9.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: 🚀 Deploy to Azure VM
+        run: |
+          echo "Uploading files to Azure VM..."
+          scp -r frontend/build/* ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/html/aurora/frontend/build/
+          scp -r backend ${{ secrets.VM_USER }}@${{ secrets.VM_IP }}:/var/www/html/aurora/
+          ssh ${{ secrets.VM_USER }}@${{ secrets.VM_IP }} << 'EOF'
+            echo "Installing backend dependencies..."
+            cd /var/www/html/aurora/backend
+            npm install
+            echo "Restarting backend with PM2..."
+            pm2 restart aurora-backend || pm2 start npm --name aurora-backend -- start
+            echo "Restarting Apache server..."
+            sudo systemctl restart apache2
+          EOF
+
+      - name: ✅ Deployment Complete
+        run: echo "🎉 AuroraVoyages deployed successfully!"
