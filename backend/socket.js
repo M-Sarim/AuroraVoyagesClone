@@ -6,7 +6,7 @@ const userSockets = new Map();
 const initializeSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "https://auroravoyages.com",
+      origin: "48.216.209.50",
       methods: ["GET", "POST"],
       credentials: true,
     },

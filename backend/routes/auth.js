@@ -191,7 +191,7 @@ router.post("/login", validateLogin, async (req, res) => {
     // TEMPORARY FIX: Check for specific admin and tour guide accounts
     // This is a workaround for the password comparison issue
     const isSpecialAccount =
-      (email === "admin@auroravoyages.com" && password === "Admin@123") ||
+      (email === "admin@" && password === "Admin@123") ||
       (email === "ali.khan@auroraexpeditions.pk" && password === "Guide@123") ||
       (email === "fatima.ahmed@auroraexpeditions.pk" &&
         password === "Guide@123");
@@ -273,7 +273,7 @@ router.post("/admin/login", async (req, res) => {
     // TEMPORARY FIX: Check for specific admin account
     // This is a workaround for the password comparison issue
     let isMatch = false;
-    if (username === "admin@auroravoyages.com" && password === "Admin@123") {
+    if (username === "admin@" && password === "Admin@123") {
       console.log("Admin account detected, bypassing password check");
       isMatch = true;
     } else {

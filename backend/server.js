@@ -46,7 +46,7 @@ const io = initializeSocket(server);
 // Middleware
 app.use(
   cors({
-    origin: "https://auroravoyages.com",
+    origin: "48.216.209.50",
     credentials: true,
   })
 );

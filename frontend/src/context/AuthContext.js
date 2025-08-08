@@ -98,7 +98,7 @@ export const AuthProvider = ({ children }) => {
       let requestData = formData;
 
       // If it's an admin login, use the admin endpoint
-      if (formData.email === "admin@auroravoyages.com") {
+      if (formData.email === "admin@") {
         console.log("AuthContext: Using admin login endpoint");
         endpoint = "/auth/admin/login";
         requestData = {
